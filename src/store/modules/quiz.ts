@@ -1,15 +1,19 @@
-
-
 export default {
   actions: {
   },
   // мутация передаем  данные в хранилища(state)
   mutations: {
     // updatePosts(state, posts){ первый параметр state, второй параметр что мы в него будем передавать
-    SET_QUIZ_ANSWER(state, quizAnswer){
+    // SET_QUIZ_ANSWER(state, payload) {
       // обращаемся к state.posts и он будет равняться массиву  posts
-      state.quizAnswer = quizAnswer;
+    //  state.quizAnswer = payload;
+    // },
+    // Чтобы каждый раз не совершать сохранение, мы копим все данные в локальном хранилише, а потом передаем когда выводим результат
+    SET_QUIZ_ANSWER(state, { answerTitle, answerCheck }) {
+      // localStorage.setItem('answerTitle', answerTitle);
+      // localStorage.setItem('answerCheck', answerCheck);
     },
+
   },
   // тут хранилище глобальных переменных
   state: {
@@ -17,28 +21,31 @@ export default {
       title: 'Моя викторина',
       questions: [
         {
-          text: "Вопрос 1",
+          text: 'Вопрос 1',
           responses: [
             {text: 'Неправильно, очень плохо.'},
             {text: 'Правильно!', correct: true},
-          ]
+          ],
         }, {
-          text: "Вопрос 2",
+          text: 'Вопрос 2',
           responses: [
             {text: 'Правильный ответ', correct: true},
             {text: 'Неправильный ответ'},
-          ]
-        }
-      ]
+          ],
+        },
+      ],
     },
     quizAnswer: [],
 
   },
   // геттер забираем данные из хранилища(state)
   getters: {
-    g_quiz(state){
+    g_quiz(state) {
       return state.quiz;
     },
+    g_quizAnswer(state) {
+      return state.quizAnswer;
+    },
 
-  }
-}
+  },
+};

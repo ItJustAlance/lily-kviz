@@ -1,17 +1,25 @@
 <template lang="pug">
 .quest
   .quiz--page
-    .quiz--cont
-
-      .quiz--step вопрос 1 из 4
-      <!-- Вопросы: показывать div для каждого вопроса -->
-      .quiz(v-for="question in g_quiz.questions" :key="g_quiz.id")
-        .quiz--quest {{ question.text }}
-        ol.quiz--answer
-          <!-- Ответы: Показывать li с радио-кнопкой для каждого возможного ответа -->
-          li(v-for="response in question.responses" :key="question.id")
-            button.quiz-btn {{response.text}}
-
+    .quiz--cont(v-for="(question, index) in g_quiz.questions" :key="g_quiz.id")
+      div(v-show="index === questionIndex")
+        .quiz--step вопрос {{ index + 1 }} из {{g_quiz.questions.length}}
+        <!-- Вопросы: показывать div для каждого вопроса -->
+        .quiz
+          .quiz--quest {{ question.text }}
+          ol.quiz--answer
+            <!-- Ответы: Показывать li с радио-кнопкой для каждого возможного ответа -->
+            li(v-for="response in question.responses" :key="question.id")
+              <!-- Радио-кнопка имеет 3 новые директивы -->
+              <!-- v-bind:value устанавливает "value" в значение "true" если ответ правильный -->
+              <!-- v-bind:name устанавливает "name" в значение индекса вопроса для группировки ответов по вопросу -->
+              <!-- v-model создает связь с userResponses -->
+              button.quiz-btn(
+                v-on:click="next(question.text, response.text)"
+              ) {{response.text}}
+    div
+      .result(v-for="(item,n) in localQuiz")
+        div : {{item}}
   footer.footer
     a.footer--logo(href="/")
       img(src="@/assets/img/flogo.jpg")
@@ -22,12 +30,64 @@
 </template>
 
 <script>
-
-import { mapGetters, mapActions } from "vuex";
+/* https://habr.com/ru/post/336328/ */
+import { mapGetters, mapActions, mapMutations } from "vuex";
 export default {
   name: "Quiz",
+  data () {
+    return {
+      // Хранит индекс текущего вопроса
+      questionIndex: 0,
+      answerTitle: '',
+      answerCheck: '',
+      localQuiz: [],
+      newAnswer: null,
+    }
+  },
+  mounted() {
+    if (localStorage.getItem('localQuiz')) {
+      try {
+        this.cats = JSON.parse(localStorage.getItem('localQuiz'));
+      } catch(e) {
+        localStorage.removeItem('localQuiz');
+      }
+    }
+  },
   components: { },
   computed: mapGetters(['g_quiz']),
+  // Представление вызовет эти методы при клике
+  methods: {
+    //...mapMutations([
+    //  'SET_QUIZ_ANSWER'
+    //]),
+    // Перейти к следующему вопросу
+    // чтобы передать значения в метод next(функция), в кнопке нужно писать вот так
+    // button.quiz-btn(v-on:клик="название метода(первый параметр, второй параметр ...)"
+    // button.quiz-btn(v-on:click="next(question.text, response.text)"
+    next: function(answerTitle, answerCheck) {
+      // переходим к следующему вопросу
+      this.questionIndex++;
+      // тут я хз читал тут (https://ru.vuejs.org/v2/cookbook/client-side-storage.html ), видимо записываем в локальное хранилище
+      console.log(answerTitle, answerCheck);
+      // localStorage.setItem('answerTitle', answerTitle);
+      // localStorage.setItem('answerCheck', answerCheck);
+
+      // не знаю что это, надо узнать
+      this.localQuiz.push(answerTitle, answerCheck);
+      // this.newAnswer = '';
+      // вызываем метод  saveLocalQuiz
+      // this.saveLocalQuiz();
+    },
+    // Вернуться к предыдущему вопросу
+    // prev: function() {
+    //   this.questionIndex--;
+    // },
+    saveLocalQuiz() {
+      // const parsed = JSON.stringify(this.localQuiz);
+      // localStorage.setItem('localQuiz', parsed);
+    }
+
+  }
 }
 </script>
 
@@ -83,14 +143,14 @@ export default {
       .quiz-btn
         display flex
         align-items center
-        padding-left 40px
+        padding 5px 10px 5px 40px
         font-size 14px
         font-weight 500
         width: 100%
         background: none
         border 1px solid #cecece
         border-radius 25px
-        min-height 36px
+        min-height 42px
         position relative
         &:hover, &:active
           background: #cecece
@@ -99,14 +159,14 @@ export default {
           font-weight 500
           font-size 13px
           position absolute
-          top 6px
+          top 9px
           left 9px
           color #000
           text-align center
           background #fff
           border 1px solid #000
           border-radius 50%
-          line-height 22px
+          line-height 20px
           width 21px
           height 21px
       &:nth-child(2) .quiz-btn:before
