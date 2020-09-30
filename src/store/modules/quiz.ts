@@ -11,7 +11,7 @@ export default {
     // Чтобы каждый раз не совершать сохранение, мы копим все данные в локальном хранилише, а потом передаем когда выводим результат
     SET_QUIZ_ANSWER(state, { answerTitle, answerCheck }) {
       // не знаю что это, надо узнать, пуш, это штука для работы с массивом, он добавляет туда поочередно новые данные в конец массива
-      state.quizAnswer.push(answerTitle, answerCheck);
+      state.quizAnswer.push({answerTitle, answerCheck});
     },
   },
   // тут хранилище глобальных переменных

@@ -5,26 +5,45 @@
       h1 Спасибо
       h2 Удачи, держитесь
     div
-      pre {{g_quizAnswer}}
+      // pre {{g_quizAnswer}}
 
 
   footer.footer
-    a.footer--logo(href="/")
+    a.footer--logo(href="https://lilysamer.com/")
       img(src="@/assets/img/flogo.jpg")
     .footer--slogan LilySamer Interior
-    a.soc-inst(href="#")
+    a.soc-inst(target="_blank" href="https://www.instagram.com/lilysamer_interior/")
       img(src="@/assets/img/inst.jpg")
 
 </template>
 
 <script>
 /* https://habr.com/ru/post/336328/ */
+import axios from 'axios';
 import { mapGetters, mapActions, mapMutations } from "vuex";
 export default {
   name: "Thanks",
   data () {
     return {
     }
+  },
+  mounted() {
+    console.log(this.g_quizAnswer);
+    // Send a POST request
+    axios({
+      method: 'post',
+      headers: { 'Content-Type': 'multipart/form-data' },
+      url: 'http://test1.p-store.ru/quiz.php',
+      data: {
+        body: this.g_quizAnswer
+      }
+    })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   },
   computed: {
     // выводим из store геттер функцию

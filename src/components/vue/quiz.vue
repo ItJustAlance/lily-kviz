@@ -21,10 +21,10 @@
       .result(v-for="(item,n) in localQuiz")
         div : {{item}}
   footer.footer
-    a.footer--logo(href="/")
+    a.footer--logo(href="https://lilysamer.com/")
       img(src="@/assets/img/flogo.jpg")
     .footer--slogan LilySamer Interior
-    a.soc-inst(href="#")
+    a.soc-inst(target="_blank" href="https://www.instagram.com/lilysamer_interior/")
       img(src="@/assets/img/inst.jpg")
 
 </template>
