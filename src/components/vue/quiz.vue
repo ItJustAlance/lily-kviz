@@ -31,7 +31,7 @@
 
 <script>
 /* https://habr.com/ru/post/336328/ */
-import { mapGetters, mapActions, mapMutations } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "Quiz",
   data () {
@@ -42,24 +42,14 @@ export default {
       answerCheck: '',
       localQuiz: [],
       newAnswer: null,
+      ShowPage: 3,
     }
   },
-  mounted() {
-    if (localStorage.getItem('localQuiz')) {
-      try {
-        this.cats = JSON.parse(localStorage.getItem('localQuiz'));
-      } catch(e) {
-        localStorage.removeItem('localQuiz');
-      }
-    }
-  },
-  components: { },
+  components: {},
   computed: mapGetters(['g_quiz']),
   // Представление вызовет эти методы при клике
   methods: {
-    //...mapMutations([
-    //  'SET_QUIZ_ANSWER'
-    //]),
+    ...mapMutations(['SET_QUIZ_ANSWER']),
     // Перейти к следующему вопросу
     // чтобы передать значения в метод next(функция), в кнопке нужно писать вот так
     // button.quiz-btn(v-on:клик="название метода(первый параметр, второй параметр ...)"
@@ -67,26 +57,15 @@ export default {
     next: function(answerTitle, answerCheck) {
       // переходим к следующему вопросу
       this.questionIndex++;
+      console.log(this.g_quiz.questions.length);
+      if(this.questionIndex === this.g_quiz.questions.length) {
+         this.$emit('isthanks', 3)
+      }
       // тут я хз читал тут (https://ru.vuejs.org/v2/cookbook/client-side-storage.html ), видимо записываем в локальное хранилище
       console.log(answerTitle, answerCheck);
-      // localStorage.setItem('answerTitle', answerTitle);
-      // localStorage.setItem('answerCheck', answerCheck);
-
-      // не знаю что это, надо узнать
-      this.localQuiz.push(answerTitle, answerCheck);
-      // this.newAnswer = '';
-      // вызываем метод  saveLocalQuiz
-      // this.saveLocalQuiz();
+      // this.НАЗВАНИЕ_МУТАЦИИ_ИЗ_STORE_quiz.ts(передаем два параметра {answerTitle, answerCheck}), далее вся обработка идет внутри функции из store файла
+      this.SET_QUIZ_ANSWER({answerTitle, answerCheck});
     },
-    // Вернуться к предыдущему вопросу
-    // prev: function() {
-    //   this.questionIndex--;
-    // },
-    saveLocalQuiz() {
-      // const parsed = JSON.stringify(this.localQuiz);
-      // localStorage.setItem('localQuiz', parsed);
-    }
-
   }
 }
 </script>

@@ -17,7 +17,7 @@ export default {
   data () {
     return {
       // передаем значение true в родителя
-      ShowQuiz: true,
+      // ShowPage: 2,
     }
   },
   components: {
@@ -30,7 +30,7 @@ export default {
   methods:{
     // вызываем метод onShowQuiz который передает  ShowQuiz: true
     onShowQuiz(){
-      this.$emit('isquiz', true)
+      this.$emit('isquiz', 2)
       // console.log(this.$emit);
     },
   },
@@ -61,6 +61,7 @@ export default {
     font-size 29px
     line-height 1.4
     margin 0 auto 10vh
+    max-width 700px
     padding 0 15px
     @media(max-width 750px) {
       max-width 340px
@@ -68,7 +69,7 @@ export default {
     }
   .btn-start-quiz
     font-size 19px
-    margin-bottom 10vh
+    margin-bottom 15vh
     font-weight 500
     border-radius 3px
     background #b80505
@@ -79,6 +80,10 @@ export default {
     font-size 15px
     margin-top 20px
     font-weight 500
+    position absolute
+    bottom 20px
+    left 0
+    width 100%
   .main-cont
     text-align center
 </style>
