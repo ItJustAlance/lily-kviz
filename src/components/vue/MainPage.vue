@@ -39,7 +39,7 @@ export default {
 .page
   background rgba(0,0,0, .4)
   position relative
-  padding 10px
+  padding 20px 10px 80px
   display flex
   align-items center
   justify-content center
@@ -77,9 +77,12 @@ export default {
     margin-top 20px
     font-weight 500
     position absolute
-    bottom 20px
+    bottom 10px
     left 0
     width 100%
+    @media(max-width 750px) {
+      bottom: 70px
+    }
   .main-cont
     text-align center
 </style>

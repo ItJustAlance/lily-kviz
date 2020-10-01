@@ -17,9 +17,6 @@
               button.quiz-btn(
                 v-on:click="next(question.text, response.text)"
               ) {{response.text}}
-    div
-      .result(v-for="(item,n) in localQuiz")
-        div : {{item}}
   footer.footer
     a.footer--logo(href="https://lilysamer.com/")
       img(src="@/assets/img/flogo.jpg")
@@ -31,6 +28,7 @@
 
 <script>
 /* https://habr.com/ru/post/336328/ */
+import axios from 'axios';
 import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "Quiz",
@@ -57,14 +55,39 @@ export default {
     next: function(answerTitle, answerCheck) {
       // переходим к следующему вопросу
       this.questionIndex++;
-      console.log(this.g_quiz.questions.length);
-      if(this.questionIndex === this.g_quiz.questions.length) {
-         this.$emit('isthanks', 3)
-      }
+      console.log(this.localQuiz);
+
       // тут я хз читал тут (https://ru.vuejs.org/v2/cookbook/client-side-storage.html ), видимо записываем в локальное хранилище
-      console.log(answerTitle, answerCheck);
+      // console.log(answerTitle, answerCheck);
       // this.НАЗВАНИЕ_МУТАЦИИ_ИЗ_STORE_quiz.ts(передаем два параметра {answerTitle, answerCheck}), далее вся обработка идет внутри функции из store файла
-      this.SET_QUIZ_ANSWER({answerTitle, answerCheck});
+      this.localQuiz.push({answerTitle, answerCheck});
+
+      // если вопрос был последним
+      if (this.questionIndex === this.g_quiz.questions.length) {
+        //this.$emit('isthanks', 3)
+        axios({
+          method: 'post',
+          headers: { 'Content-Type': 'multipart/form-data' },
+          url: 'http://test1.p-store.ru/quiz.php',
+          data: {
+            body: this.localQuiz
+          }
+        })
+                // при успешной отправке
+                .then(function (response) {
+                  console.log(response);
+                  // перенаправление на страницу спасибо
+                  setTimeout(function(){
+                    window.location.href = 'https://lilysamer.com/project/spasibo.php';
+                  }, 100);
+                })
+                .catch(function (error) {
+                  console.log(error);
+                });
+
+      }
+
+
     },
   }
 }
@@ -145,7 +168,7 @@ export default {
           background #fff
           border 1px solid #000
           border-radius 50%
-          line-height 20px
+          line-height 21px
           width 21px
           height 21px
       &:nth-child(2) .quiz-btn:before
