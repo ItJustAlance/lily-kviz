@@ -37,7 +37,7 @@ export default {
 
 <style lang="stylus">
 .page
-  background rgba(0,0,0, .4)
+  background rgba(0,0,0, .3)
   position relative
   padding 20px 10px 80px
   display flex

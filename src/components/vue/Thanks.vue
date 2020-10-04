@@ -13,7 +13,7 @@
       img(src="@/assets/img/flogo.jpg")
     .footer--slogan LilySamer Interior
     a.soc-inst(target="_blank" href="https://www.instagram.com/lilysamer_interior/")
-      img(src="@/assets/img/inst.jpg")
+      img(src="@/assets/img/s-in.svg")
 
 </template>
 

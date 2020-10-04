@@ -22,14 +22,14 @@
       img(src="@/assets/img/flogo.jpg")
     .footer--slogan LilySamer Interior
     a.soc-inst(target="_blank" href="https://www.instagram.com/lilysamer_interior/")
-      img(src="@/assets/img/inst.jpg")
+      img(src="@/assets/img/s-in.svg")
 
 </template>
 
 <script>
 /* https://habr.com/ru/post/336328/ */
 import axios from 'axios';
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters, mapMutations, mapActions } from "vuex";
 export default {
   name: "Quiz",
   data () {
@@ -47,6 +47,7 @@ export default {
   computed: mapGetters(['g_quiz']),
   // Представление вызовет эти методы при клике
   methods: {
+    ...mapActions(['GET_QUIZ_FROM_API']),
     ...mapMutations(['SET_QUIZ_ANSWER']),
     // Перейти к следующему вопросу
     // чтобы передать значения в метод next(функция), в кнопке нужно писать вот так
@@ -73,23 +74,24 @@ export default {
             body: this.localQuiz
           }
         })
-                // при успешной отправке
-                .then(function (response) {
-                  console.log(response);
-                  // перенаправление на страницу спасибо
-                  setTimeout(function(){
-                    window.location.href = 'https://lilysamer.com/project/spasibo.php';
-                  }, 100);
-                })
-                .catch(function (error) {
-                  console.log(error);
-                });
+        // при успешной отправке
+        .then(function (response) {
+          console.log(response);
+          // перенаправление на страницу спасибо
+          setTimeout(function(){
+            window.location.href = 'https://lilysamer.com/project/spasibo.php';
+          }, 100);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
 
       }
-
-
     },
-  }
+  },
+  mounted() {
+    this.GET_QUIZ_FROM_API();
+  },
 }
 </script>
 
@@ -103,7 +105,7 @@ export default {
   max-width 350px
   margin 0 auto
   &--page
-    background rgba(0,0,0, .4)
+    background rgba(0,0,0, .3)
     position relative
     padding 10px
     display flex
@@ -186,6 +188,7 @@ export default {
 .footer
   background #fff
   display flex
+  align-items center
   justify-content space-between
   padding 10px
 
