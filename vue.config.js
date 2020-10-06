@@ -32,6 +32,6 @@ module.exports = {
         .use('svgo-loader')
         .loader('svgo-loader')
   },
-
+  publicPath: './',
   // assetsDir: 'assets'
 }

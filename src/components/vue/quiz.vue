@@ -16,6 +16,7 @@
               <!-- v-model создает связь с userResponses -->
               button.quiz-btn(v-on:click="next(question.text, response.text)")
                 span {{response.text}}
+//
   footer.footer
     a.footer--logo(href="https://lilysamer.com/")
       img(src="@/assets/img/flogo.jpg")
@@ -85,7 +86,7 @@ export default {
   justify-content space-between
   height 100vh
 .quiz
-  max-width 350px
+  max-width 290px
   margin 0 auto
   &--page
     background rgba(0,0,0, .3)
@@ -118,7 +119,7 @@ export default {
     padding 15px
     display block
   &--answer
-    padding 20px 10px 10px
+    padding 25px 25px 20px
     background #fff
     color #2f2f2f
     border-radius 0 0 10px 10px

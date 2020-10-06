@@ -16,6 +16,7 @@
           input(type="text"  v-model="userPhone")
         .row-form-button
           button(v-on:click="submitData()") Получить расчет
+//
   footer.footer
     a.footer--logo(href="https://lilysamer.com/")
       img(src="@/assets/img/flogo.jpg")
@@ -56,7 +57,7 @@ export default {
         axios({
           method: 'post',
           headers: { 'Content-Type': 'multipart/form-data' },
-          url: 'http://test1.p-store.ru/quiz.php',
+          url: 'https://lilysamer.com/quiz/quiz.php',
           data: {
             body: this.g_quizAnswer,
             userPhone: this.userPhone,
@@ -79,10 +80,10 @@ export default {
       this.errors = [];
 
       if (!this.userName) {
-        this.errors.push('пожалуйста введите email.');
+        this.errors.push('Пожалуйста, введите email.');
       }
       if (!this.userPhone) {
-        this.errors.push('пожалуйста введите телефон.');
+        this.errors.push('Пожалуйста, введите телефон.');
       }
 
 
@@ -93,6 +94,8 @@ export default {
 </script>
 
 <style scoped lang="stylus">
+*
+  outline none !important
 .thanks
   display flex
   flex-direction column
@@ -102,7 +105,7 @@ export default {
     color #b80505
     padding-bottom 15px
   &--cont
-    max-width 350px
+    max-width 290px
   &--page
     background rgba(0,0,0, .4)
     position relative
@@ -130,8 +133,8 @@ export default {
     font-size 14px
     background #fff
     border-radius 10px
-    padding 10px 15px
-    max-width 280px
+    padding 10px 25px
+    max-width 290px
     margin 0 auto
     color #303030
     font-weight 500
@@ -146,8 +149,10 @@ export default {
       border-radius 5px
       padding 8px 5px
       width 100%
+      outline none !important
+      font-weight 400
     .row-form-button
-      margin 0 -15px -10px
+      margin 0 -25px -10px
       padding-top 15px
     button
       background #b80505

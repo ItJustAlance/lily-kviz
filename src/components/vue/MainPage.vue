@@ -79,7 +79,8 @@ export default {
     left 0
     width 100%
     @media(max-width 750px) {
-      bottom: 70px
+      bottom 140px
+      margin-top 0
     }
   .main-cont
     text-align center
