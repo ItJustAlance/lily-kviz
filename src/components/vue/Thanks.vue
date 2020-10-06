@@ -1,13 +1,21 @@
 <template lang="pug">
 .thanks
   .thanks--page
-    .thanks-cont
-      h1 Спасибо
-      h2 Удачи, держитесь
-    div
-      // pre {{g_quizAnswer}}
+    .thanks--cont
+      .thanks-title Введите вашу почту и номер, <br>мы вышлем вам стоимость, сроки. <br>И проведём консультацию.
+      .thanks--form
+        .thanks-error(v-if="errors.length")
+          ul
+            li(v-for="error in errors") {{ error }}
 
-
+        .row-form
+          label Почта:
+          input(type="text" v-model="userName")
+        .row-form
+          label Телефон:
+          input(type="text"  v-model="userPhone")
+        .row-form-button
+          button(v-on:click="submitData()") Получить расчет
   footer.footer
     a.footer--logo(href="https://lilysamer.com/")
       img(src="@/assets/img/flogo.jpg")
@@ -25,30 +33,61 @@ export default {
   name: "Thanks",
   data () {
     return {
+      errors: [],
+      userPhone: null,
+      userName: null,
     }
   },
+
+  // вычисляемые свойства
   mounted() {
-    console.log(this.g_quizAnswer);
+    // console.log(this.g_quizAnswer);
     // Send a POST request
-    axios({
-      method: 'post',
-      headers: { 'Content-Type': 'multipart/form-data' },
-      url: 'http://test1.p-store.ru/quiz.php',
-      data: {
-        body: this.g_quizAnswer
-      }
-    })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+
   },
   computed: {
     // выводим из store геттер функцию
     ...mapGetters(['g_quizAnswer']),
-  }
+  },
+  methods: {
+    submitData:function (){
+      // если почта и телефон заполнены, то отправляем форму
+      if (this.userName && this.userPhone) {
+        axios({
+          method: 'post',
+          headers: { 'Content-Type': 'multipart/form-data' },
+          url: 'http://test1.p-store.ru/quiz.php',
+          data: {
+            body: this.g_quizAnswer,
+            userPhone: this.userPhone,
+            userName: this.userName
+          }
+        })
+          // при успешной отправке
+          .then(function (response) {
+            console.log(response);
+            // перенаправление на страницу спасибо
+            setTimeout(function(){
+              window.location.href = 'https://lilysamer.com/project/spasibo.php';
+            }, 100);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        console.log('succ');
+      }
+      this.errors = [];
+
+      if (!this.userName) {
+        this.errors.push('пожалуйста введите email.');
+      }
+      if (!this.userPhone) {
+        this.errors.push('пожалуйста введите телефон.');
+      }
+
+
+    },
+  },
 
 }
 </script>
@@ -59,6 +98,9 @@ export default {
   flex-direction column
   justify-content space-between
   height 100vh
+  &-error
+    color #b80505
+    padding-bottom 15px
   &--cont
     max-width 350px
   &--page
@@ -80,8 +122,45 @@ export default {
       position absolute
       top 0
       left 0
-  &--cont
+  &-title
     font-size 16px
+    text-align center
+    padding 0 0 15px
+  &--form
+    font-size 14px
+    background #fff
+    border-radius 10px
+    padding 10px 15px
+    max-width 280px
+    margin 0 auto
+    color #303030
+    font-weight 500
+    text-align left
+    .row-form
+      margin-bottom: 10px
+    label
+      display block
+      padding-bottom 4px
+    input
+      border 1px solid #303030
+      border-radius 5px
+      padding 8px 5px
+      width 100%
+    .row-form-button
+      margin 0 -15px -10px
+      padding-top 15px
+    button
+      background #b80505
+      border-radius 0 0 10px 10px
+      width 100%
+      padding 15px 5px
+      font-size 16px
+      text-align center
+      color #fff
+      display block
+      cursor pointer
+      &:hover
+        opacity .8
   &--step
     padding-bottom 20px
   &--quest
@@ -142,6 +221,7 @@ export default {
         content "F"
       &:nth-child(7) .quiz-btn:before
         content "G"
+
 .footer
   background #fff
   display flex

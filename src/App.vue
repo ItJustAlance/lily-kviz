@@ -4,7 +4,7 @@
     // из компонента MainPage достаем emit и показываем его родителям, родители понимаю что у нас замочки в этой коробочке и далее могут эти замочки кудато переложить
     MainPage(v-on:isquiz="toggleQuiz" v-if="ShowPage == 1")
     Quiz(v-if="ShowPage == 2" v-on:isthanks="toggleThanks")
-    // Thanks(v-if="ShowPage == 3")
+    Thanks(v-if="ShowPage == 3")
 </template>
 
 <script>

@@ -8,7 +8,7 @@ export default {
   },
   actions: {
     GET_QUIZ_FROM_API: ({commit}) => {
-      return axios('http://test1.p-store.ru/json.php', {
+      return axios('https://lilysamer.com/quiz/json.php', {
         method: "GET",
         headers: { 'content-type': 'application/json' },
       })

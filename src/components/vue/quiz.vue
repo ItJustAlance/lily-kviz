@@ -14,9 +14,8 @@
               <!-- v-bind:value устанавливает "value" в значение "true" если ответ правильный -->
               <!-- v-bind:name устанавливает "name" в значение индекса вопроса для группировки ответов по вопросу -->
               <!-- v-model создает связь с userResponses -->
-              button.quiz-btn(
-                v-on:click="next(question.text, response.text)"
-              ) {{response.text}}
+              button.quiz-btn(v-on:click="next(question.text, response.text)")
+                span {{response.text}}
   footer.footer
     a.footer--logo(href="https://lilysamer.com/")
       img(src="@/assets/img/flogo.jpg")
@@ -61,30 +60,14 @@ export default {
       // тут я хз читал тут (https://ru.vuejs.org/v2/cookbook/client-side-storage.html ), видимо записываем в локальное хранилище
       // console.log(answerTitle, answerCheck);
       // this.НАЗВАНИЕ_МУТАЦИИ_ИЗ_STORE_quiz.ts(передаем два параметра {answerTitle, answerCheck}), далее вся обработка идет внутри функции из store файла
-      this.localQuiz.push({answerTitle, answerCheck});
+      // запись в локальное хранилище
+      //this.localQuiz.push({answerTitle, answerCheck});
+      // запись в мутацию в хранилище
+      this.SET_QUIZ_ANSWER({answerTitle, answerCheck});
 
       // если вопрос был последним
       if (this.questionIndex === this.g_quiz.questions.length) {
-        //this.$emit('isthanks', 3)
-        axios({
-          method: 'post',
-          headers: { 'Content-Type': 'multipart/form-data' },
-          url: 'http://test1.p-store.ru/quiz.php',
-          data: {
-            body: this.localQuiz
-          }
-        })
-        // при успешной отправке
-        .then(function (response) {
-          console.log(response);
-          // перенаправление на страницу спасибо
-          setTimeout(function(){
-            window.location.href = 'https://lilysamer.com/project/spasibo.php';
-          }, 100);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+        this.$emit('isthanks', 3)
 
       }
     },
@@ -146,6 +129,7 @@ export default {
       margin-bottom 10px
       .quiz-btn
         display flex
+        justify-content flex-start
         align-items center
         padding 5px 10px 5px 40px
         font-size 14px
@@ -156,6 +140,9 @@ export default {
         border-radius 25px
         min-height 42px
         position relative
+        span
+          display block
+          text-align left
         &:hover, &:active
           background: #cecece
         &:before
@@ -170,7 +157,10 @@ export default {
           background #fff
           border 1px solid #000
           border-radius 50%
-          line-height 21px
+          line-height 13px
+          display flex
+          justify-content center
+          align-items center
           width 21px
           height 21px
       &:nth-child(2) .quiz-btn:before

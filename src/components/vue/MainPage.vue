@@ -16,8 +16,6 @@ export default {
   name: "MainPage",
   data () {
     return {
-      // передаем значение true в родителя
-      // ShowPage: 2,
     }
   },
   components: {
